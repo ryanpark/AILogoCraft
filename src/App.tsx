@@ -19,7 +19,7 @@ const App = () => {
   // const [loading, setLoading] = useState(false);
 
   // const genAI = new GoogleGenAI({
-  //   apiKey: "AIzaSyDoMVv2MdPr5iOip3UdK0oG46wSVUe8TZg",
+  //   apiKey: import.meta.env.VITE_API_KEY,
   // });
 
   // const generateImage = async () => {
