@@ -12,6 +12,8 @@ const App = () => {
     openState: false,
     selectPicker: 0,
   });
+  const [name, setName] = useState("");
+  const [industry, setIndustry] = useState("");
 
   const [primaryColor, setPrimaryColor] = useState("#fff");
   const [secondaryColor, setSecondaryColor] = useState("#fff");
@@ -98,6 +100,23 @@ const App = () => {
 
   return (
     <>
+      <input
+        type="text"
+        placeholder="Type here"
+        className="input border-4"
+        onChange={(val) => setName(val.target.value)}
+      />
+      <select
+        defaultValue="Pick a industry"
+        className="select"
+        onChange={(e) => setIndustry(e.target.value)}
+        // onChange={setIndustry(value)}
+      >
+        <option disabled={true}>Pick a industy type</option>
+        <option>Agency</option>
+        <option>Porn</option>
+        <option>Start Up</option>
+      </select>
       <button
         onClick={() =>
           setStatePicker({ openState: !statePicker.openState, selectPicker: 1 })
@@ -115,9 +134,10 @@ const App = () => {
       >
         Select Secondary Color
       </button>
-
+      {name}
       {primaryColor}
       {secondaryColor}
+      {industry}
       {statePicker.openState && (
         <ColourPicker
           setStatePicker={setStatePicker}
