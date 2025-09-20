@@ -2,69 +2,76 @@ import { useCallback, useState } from "react";
 import ColourPicker from "@/components/ui/ColourPicker";
 
 // import { GoogleGenerativeAI } from '@google/generative-ai'; // Assuming this is the package you're using (or similar; confirm via npm)
-// import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
 import "./App.css";
 
 const App = () => {
-  // const [generatedImage, setGeneratedImage] = useState(null);
+  const [generatedImage, setGeneratedImage] = useState("");
   const [statePicker, setStatePicker] = useState({
     openState: false,
     selectPicker: 0,
   });
   const [name, setName] = useState("");
+  const [symbol, setSymbol] = useState("");
   const [industry, setIndustry] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [style, setStyle] = useState("");
 
-  const [primaryColor, setPrimaryColor] = useState("#fff");
-  const [secondaryColor, setSecondaryColor] = useState("#fff");
+  const [primaryColor, setPrimaryColor] = useState("#333");
+  const [secondaryColor, setSecondaryColor] = useState("#333");
 
   // const [loading, setLoading] = useState(false);
 
-  // const genAI = new GoogleGenAI({
-  //   apiKey: import.meta.env.VITE_API_KEY,
-  // });
+  const genAI = new GoogleGenAI({
+    apiKey: import.meta.env.VITE_API_KEY,
+  });
 
-  // const generateImage = async () => {
-  //   setLoading(true);
-  //   try {
-  //     // const model = genAI.models.get({
-  //     //   model: "gemini-2.5-flash-image-preview",
-  //     // });
+  const generateImage = async () => {
+    setLoading(true);
+    try {
+      // const model = genAI.models.get({
+      //   model: "gemini-2.5-flash-image-preview",
+      // });
 
-  //     const prompt =
-  //       "Generate a vibrant image of a futuristic cityscape at sunset with flying cars and neon lights."; // Replace with your desired prompt
+      const prompt = `Create Logo brand/comapny name is ${name},
+        Industry type is ${industry}, // Replace with your desired prompt
+        Logo style should be ${style}, use ${symbol} as icon or symbol
+        Colour should be  ${primaryColor} and ${secondaryColor}
+        `;
 
-  //     //const result = await model.generateContent(prompt);
+      //const result = await model.generateContent(prompt);
 
-  //     const response = await genAI.models.generateContent({
-  //       model: "gemini-2.5-flash-image-preview",
-  //       contents: prompt,
-  //     });
+      const response = await genAI.models.generateContent({
+        model: "gemini-2.5-flash-image-preview",
+        contents: prompt,
+      });
 
-  //     //const response = await result.response;
+      // const response = await result.response;
 
-  //     const parts = response.candidates[0].content.parts;
+      const parts = response?.candidates?.[0]?.content?.parts;
 
-  //     return;
-  //     for (const part of parts) {
-  //       if (part.inlineData) {
-  //         // Extract base64 image data
-  //         const base64Image = part.inlineData.data;
-  //         setGeneratedImage(`data:image/png;base64,${base64Image}`); // For display in <img>
-  //         // Optionally, save to file: const link = document.createElement('a'); link.href = base64ImageUrl; link.download = 'generated-image.png'; link.click();
-  //         break;
-  //       }
-  //     }
+      if (Array.isArray(parts)) {
+        for (const part of parts) {
+          if (part.inlineData) {
+            // Extract base64 image data
+            const base64Image = part.inlineData.data;
+            setGeneratedImage(`data:image/png;base64,${base64Image}`); // For display in <img>
+            // Optionally, save to file: const link = document.createElement('a'); link.href = base64ImageUrl; link.download = 'generated-image.png'; link.click();
+            break;
+          }
+        }
+      }
 
-  //     if (!generatedImage) {
-  //       console.log("No image generated; check response:", response);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error generating image:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+      if (!generatedImage) {
+        console.log("No image generated; check response:", response);
+      }
+    } catch (error) {
+      console.error("Error generating image:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const updateColor = useCallback(
     (c: string) => {
@@ -77,103 +84,134 @@ const App = () => {
     [statePicker.selectPicker]
   );
 
-  // to do
-
-  // const updateColor = useCallback(
-  //   (c) => {
-  //     const key =
-  //       statePicker.selectPicker === 1
-  //         ? "primaryColor"
-  //         : statePicker.selectPicker === 2
-  //         ? "secondaryColor"
-  //         : null;
-
-  //     if (key) {
-  //       setColors((prev) => ({
-  //         ...prev,
-  //         [key]: c,
-  //       }));
-  //     }
-  //   },
-  //   [statePicker.selectPicker]
-  // );
-
   return (
     <>
-      <input
-        type="text"
-        placeholder="Type here"
-        className="input border-4"
-        onChange={(val) => setName(val.target.value)}
-      />
-      <select
-        defaultValue="Pick a industry"
-        className="select"
-        onChange={(e) => setIndustry(e.target.value)}
-        // onChange={setIndustry(value)}
-      >
-        <option disabled={true}>Pick a industy type</option>
-        <option>Agency</option>
-        <option>Porn</option>
-        <option>Start Up</option>
-      </select>
-      <button
-        onClick={() =>
-          setStatePicker({ openState: !statePicker.openState, selectPicker: 1 })
-        }
-        className="text-white"
-      >
-        Select Primary Color
-      </button>
-
-      <button
-        onClick={() =>
-          setStatePicker({ openState: !statePicker.openState, selectPicker: 2 })
-        }
-        className="text-white"
-      >
-        Select Secondary Color
-      </button>
-      {name}
-      {primaryColor}
-      {secondaryColor}
-      {industry}
-      {statePicker.openState && (
-        <ColourPicker
-          setStatePicker={setStatePicker}
-          onChange={(v: string | number | number[]) => {
-            updateColor(v as string);
-          }}
+      <div className="flex items-center flex-col space-y-7 max-w-3xl m-auto mt-5 mb-5">
+        <h1 className="text-4xl">AI LogoCraft</h1>
+        <h2 className="text-3xl">Create stunning logos with AI precision</h2>
+      </div>
+      <div className="flex items-center flex-col space-y-7 max-w-3xl m-auto bg-base-100 rounded-md border-1 p-10">
+        <p className="text-left">Brand or Company name</p>
+        <input
+          type="text"
+          placeholder="Type here"
+          className="input border-2"
+          id="name"
+          onChange={(val) => setName(val.target.value)}
         />
-
-        //     /* <button onClick={generateImage} className="text-red">
-        //   Generate Image
-        // </button>
-        // <h1 className="text-xl">XYZ-Logo</h1>
-        // {loading && <p>Generating image...</p>} */
-
-        //     {/* <ColorPicker className="max-w-sm rounded-md border bg-background p-4 shadow-sm">
-        //       <ColorPickerSelection />
-        //       <div className="flex items-center gap-4">
-        //         <ColorPickerEyeDropper />
-        //         <div className="grid w-full gap-1">
-        //           <ColorPickerHue />
-        //           <ColorPickerAlpha />
-        //         </div>
-        //       </div>
-        //       <div className="flex items-center gap-2">
-        //         <ColorPickerOutput />
-        //         <ColorPickerFormat getValue={getValue} />
-        //       </div>
-        //     </ColorPicker> */}
-      )}
-      {/* {generatedImage && (
-        <img
-          src={generatedImage}
-          alt="Generated"
-          style={{ maxWidth: "100%" }}
+        <p className="text-left">Industry</p>
+        <select
+          name="industry"
+          defaultValue="Pick a industry"
+          className="select border-2"
+          id="industry"
+          onChange={(e) => setIndustry(e.target.value)}
+        >
+          <option value="">Select Industry</option>
+          <option value="technology">Technology</option>
+          <option value="ecommerce">E-commerce</option>
+          <option value="finance-accounting">Finance & Accounting</option>
+          <option value="health-wellness">Health & Wellness</option>
+          <option value="real-estate">Real Estate</option>
+          <option value="education">Education</option>
+          <option value="food-beverage">Food & Beverage</option>
+          <option value="fashion-beauty">Fashion & Beauty</option>
+          <option value="sports-fitness">Sports & Fitness</option>
+          <option value="travel-hospitality">Travel & Hospitality</option>
+          <option value="automotive">Automotive</option>
+          <option value="media-entertainment">Media & Entertainment</option>
+          <option value="marketing-advertising">Marketing & Advertising</option>
+          <option value="nonprofit-charity">Non-Profit / Charity</option>
+          <option value="legal-law">Legal & Law</option>
+          <option value="construction-architecture">
+            Construction & Architecture
+          </option>
+          <option value="art-design">Art & Design</option>
+          <option value="photography">Photography</option>
+          <option value="pet-animal-services">Pet & Animal Services</option>
+          <option value="gaming">Gaming</option>
+          <option value="event-planning">Event Planning</option>
+          <option value="home-services">Home Services</option>
+          <option value="consulting">Consulting</option>
+          <option value="logistics-transportation">
+            Logistics & Transportation
+          </option>
+          <option value="agriculture">Agriculture</option>
+          <option value="energy-utilities">Energy & Utilities</option>
+          <option value="government-public-sector">
+            Government & Public Sector
+          </option>
+          <option value="human-resources">Human Resources</option>
+          <option value="retail">Retail</option>
+          <option value="craft-handmade">Craft & Handmade</option>
+        </select>
+        <p className="text-left">Style</p>
+        <select
+          name="logoStyle"
+          id="logoStyle"
+          className="select border-2"
+          onChange={(e) => setStyle(e.target.value)}
+        >
+          <option value="">Select Logo Style</option>
+          <option value="minimalist">Minimalist</option>
+          <option value="modern">Modern</option>
+          <option value="classic">Classic / Vintage</option>
+          <option value="elegant">Elegant / Luxury</option>
+          <option value="bold">Bold / Strong</option>
+          <option value="playful">Playful / Fun</option>
+          <option value="abstract">Abstract</option>
+          <option value="typography">Typography-Based</option>
+          <option value="emblem">Emblem / Badge</option>
+          <option value="handwritten">Handwritten / Script</option>
+        </select>
+        <p className="text-left">Icon or Symbol</p>
+        <input
+          type="text"
+          id="symbol"
+          placeholder="Icon or Symbol Preferences"
+          className="input border-4"
+          onChange={(val) => setSymbol(val.target.value)}
         />
-      )} */}
+        <p className="text-left">Colours</p>
+        <button
+          onClick={() =>
+            setStatePicker({
+              openState: !statePicker.openState,
+              selectPicker: 1,
+            })
+          }
+          className="btn btn-neutral w-3 rounded-3"
+        ></button>
+        <button
+          onClick={() =>
+            setStatePicker({
+              openState: !statePicker.openState,
+              selectPicker: 2,
+            })
+          }
+          className="btn w-3 rounded-3"
+        ></button>
+        <button className="btn p-8 btn-primary" onClick={generateImage}>
+          {loading && <p>Generating image...</p>}{" "}
+          <h1 className="text-xl">Start Generating Your Logo</h1>
+        </button>
+        {name} ,{primaryColor} ,{secondaryColor} ,{industry} ,{symbol} ,
+        {statePicker.openState && (
+          <ColourPicker
+            setStatePicker={setStatePicker}
+            onChange={(v: string | number | number[]) => {
+              updateColor(v as string);
+            }}
+          />
+        )}
+        {generatedImage && (
+          <img
+            src={generatedImage}
+            alt="Generated"
+            style={{ maxWidth: "100%" }}
+          />
+        )}
+      </div>
     </>
   );
 };
