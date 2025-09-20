@@ -47,7 +47,7 @@ export default function ColourPicker({
   }, [setStatePicker]);
 
   return (
-    <div className="h-100" ref={colorPickerRef}>
+    <div className="h-100 inline-block" ref={colorPickerRef}>
       <ColorPicker className="max-w-sm rounded-md border bg-background p-4 shadow-sm">
         <ColorPickerSelection />
         <div className="flex items-center gap-4">
