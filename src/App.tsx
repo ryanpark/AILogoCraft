@@ -1,13 +1,16 @@
-import { useCallback, useState } from "react";
-import ColourPicker from "@/components/ui/ColourPicker";
+import { useState, useRef, useEffect } from "react";
+import { ColorPicker, useColor } from "react-color-palette";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import "react-color-palette/css";
 
-// import { GoogleGenerativeAI } from '@google/generative-ai'; // Assuming this is the package you're using (or similar; confirm via npm)
 import { GoogleGenAI } from "@google/genai";
 
 import "./App.css";
 
 const App = () => {
   const [generatedImage, setGeneratedImage] = useState("");
+  const [color, setColor] = useColor("#561ecb");
   const [statePicker, setStatePicker] = useState({
     openState: false,
     selectPicker: 0,
@@ -17,11 +20,40 @@ const App = () => {
   const [industry, setIndustry] = useState("");
   const [loading, setLoading] = useState(false);
   const [style, setStyle] = useState("");
+  const colorPickerRef = useRef<HTMLDivElement>(null);
 
-  const [primaryColor, setPrimaryColor] = useState("#333");
-  const [secondaryColor, setSecondaryColor] = useState("#333");
+  const [primaryColor, setPrimaryColor] = useState("#D7C0D0");
+  const [secondaryColor, setSecondaryColor] = useState("#EFF0D1");
 
-  // const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (statePicker.selectPicker === 1) {
+      setPrimaryColor(color.hex);
+    } else if (statePicker.selectPicker === 2) {
+      setSecondaryColor(color.hex);
+    }
+  }, [color]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        colorPickerRef.current &&
+        !colorPickerRef.current.contains(event.target as Node)
+      ) {
+        setStatePicker(() => ({
+          selectPicker: 0,
+          openState: false,
+        }));
+      }
+    };
+
+    // Add event listener for mousedown
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setStatePicker]);
 
   const genAI = new GoogleGenAI({
     apiKey: import.meta.env.VITE_API_KEY,
@@ -73,22 +105,18 @@ const App = () => {
     }
   };
 
-  const updateColor = useCallback(
-    (c: string) => {
-      if (statePicker.selectPicker === 1) {
-        setPrimaryColor(c);
-      } else if (statePicker.selectPicker === 2) {
-        setSecondaryColor(c);
-      }
-    },
-    [statePicker.selectPicker]
-  );
-
   return (
     <>
       <div className="flex items-center flex-col space-y-7 max-w-3xl m-auto mt-5 mb-5">
         <h1 className="text-4xl">AI LogoCraft</h1>
         <h2 className="text-3xl">Create stunning logos with AI precision</h2>
+        {generatedImage && (
+          <img
+            src={generatedImage}
+            alt="Generated"
+            style={{ maxWidth: "100%" }}
+          />
+        )}
       </div>
       <div className="flex items-center flex-col space-y-7 max-w-3xl m-auto bg-base-100 rounded-md border-1 p-10">
         <p className="text-left">Brand or Company name</p>
@@ -173,16 +201,26 @@ const App = () => {
           onChange={(val) => setSymbol(val.target.value)}
         />
         <p className="text-left">Colours</p>
+        <div ref={colorPickerRef}>
+          {statePicker.openState && (
+            <ColorPicker color={color} onChange={setColor} />
+          )}
+        </div>
+        <p>Primary Color</p>
         <button
+          style={{ backgroundColor: primaryColor }}
           onClick={() =>
             setStatePicker({
               openState: !statePicker.openState,
               selectPicker: 1,
             })
           }
-          className="btn btn-neutral w-3 rounded-3"
+          // className={`btn bg-[#50d71e]`}
+          className="btn w-3 rounded-3"
         ></button>
+        <p>Secondary Color</p>
         <button
+          style={{ backgroundColor: secondaryColor }}
           onClick={() =>
             setStatePicker({
               openState: !statePicker.openState,
@@ -196,21 +234,6 @@ const App = () => {
           <h1 className="text-xl">Start Generating Your Logo</h1>
         </button>
         {name} ,{primaryColor} ,{secondaryColor} ,{industry} ,{symbol} ,
-        {statePicker.openState && (
-          <ColourPicker
-            setStatePicker={setStatePicker}
-            onChange={(v: string | number | number[]) => {
-              updateColor(v as string);
-            }}
-          />
-        )}
-        {generatedImage && (
-          <img
-            src={generatedImage}
-            alt="Generated"
-            style={{ maxWidth: "100%" }}
-          />
-        )}
       </div>
     </>
   );
