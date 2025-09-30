@@ -1,9 +1,26 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "daisyui" {
-  themes: aqua;
+  themes: cyberpunk;
 }
 @custom-variant dark (&:is(.dark *));
+
+/* @font-face {
+  font-family: SFcompactR;
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("assets/fonts/SFCompactRounded.ttf") format("ttf");
+} */
+body {
+  color: #333;
+}
+
+@theme {
+  --font-display:
+    "SF Pro Rounded Black", "San Francisco", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -16,13 +33,10 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-border: var(--border);

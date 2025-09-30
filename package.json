@@ -12,6 +12,7 @@
   "dependencies": {
     "@google/genai": "^1.19.0",
     "@tailwindcss/vite": "^4.1.13",
+    "@tanstack/react-form": "^1.23.4",
     "lucide-react": "^0.544.0",
     "react": "^19.1.1",
     "react-color-palette": "^7.3.1",
@@ -21,6 +22,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@tanstack/react-router": "^1.132.23",
+    "@tanstack/router-plugin": "^1.132.23",
     "@types/color": "^4.2.0",
     "@types/node": "^24.5.0",
     "@types/react": "^19.1.10",
