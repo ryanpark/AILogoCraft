@@ -17,7 +17,7 @@ export const Route = createFileRoute("/createLogo")({
 
 function CreateLogo() {
   const [generatedImage, setGeneratedImage] = useState("");
-  const [color, setColor] = useColor("#561ecb");
+  const [color, setColor] = useColor("#E84855");
   const [statePicker, setStatePicker] = useState({
     openState: false,
     selectPicker: 0,
@@ -42,8 +42,8 @@ function CreateLogo() {
       Industry: "",
       Styles: "",
       Symbols: "",
-      PrimaryColor: "#D7C0D0",
-      SecondaryColor: "#EFF0D1",
+      PrimaryColor: "#E84855",
+      SecondaryColor: "#FF9B71",
     },
     onSubmit: async ({ value }) => {
       console.log(value);
@@ -113,249 +113,310 @@ function CreateLogo() {
   return (
     <>
       {generatedImage && (
-        <img
-          src={generatedImage}
-          alt="Generated"
-          style={{ maxWidth: "100%" }}
-        />
-      )}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-        className="flex items-center flex-col space-y-7 max-w-3xl m-auto bg-base-100 rounded-md border-1 p-10"
-      >
-        <form.Field
-          name="BrandName"
-          validators={{
-            onChange: ({ value }) =>
-              !value
-                ? "Brand or Company name is required"
-                : value.length < 3
-                  ? "Brand or Company name must be at least 3 characters"
-                  : undefined,
-            onChangeAsyncDebounceMs: 500,
-            onChangeAsync: async ({ value }) => {
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              return (
-                value.includes("error") && 'No "error" allowed in brand name'
-              );
-            },
-          }}
-          children={(field) => (
-            <>
-              <label htmlFor={field.name}>Brand or Company name</label>
-              <input
-                type="text"
-                placeholder="Type here"
-                className="input border-2"
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              <FieldInfo field={field} />
-            </>
-          )}
-        />
-        <form.Field
-          name="Industry"
-          validators={{
-            onChange: ({ value }) =>
-              !value ? "Please select an industry" : undefined,
-          }}
-          children={(field) => (
-            <>
-              <label htmlFor={field.name} className="text-left">
-                Industry
-              </label>
-              <select
-                name={field.name}
-                id={field.name}
-                className="select border-2"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-              >
-                <option value="">Select Industry</option>
-                <option value="technology">Technology</option>
-                <option value="ecommerce">E-commerce</option>
-                <option value="finance-accounting">Finance & Accounting</option>
-                <option value="health-wellness">Health & Wellness</option>
-                <option value="real-estate">Real Estate</option>
-                <option value="education">Education</option>
-                <option value="food-beverage">Food & Beverage</option>
-                <option value="fashion-beauty">Fashion & Beauty</option>
-                <option value="sports-fitness">Sports & Fitness</option>
-                <option value="travel-hospitality">Travel & Hospitality</option>
-                <option value="automotive">Automotive</option>
-                <option value="media-entertainment">
-                  Media & Entertainment
-                </option>
-                <option value="marketing-advertising">
-                  Marketing & Advertising
-                </option>
-                <option value="nonprofit-charity">Non-Profit / Charity</option>
-                <option value="legal-law">Legal & Law</option>
-                <option value="construction-architecture">
-                  Construction & Architecture
-                </option>
-                <option value="art-design">Art & Design</option>
-                <option value="photography">Photography</option>
-                <option value="pet-animal-services">
-                  Pet & Animal Services
-                </option>
-                <option value="gaming">Gaming</option>
-                <option value="event-planning">Event Planning</option>
-                <option value="home-services">Home Services</option>
-                <option value="consulting">Consulting</option>
-                <option value="logistics-transportation">
-                  Logistics & Transportation
-                </option>
-                <option value="agriculture">Agriculture</option>
-                <option value="energy-utilities">Energy & Utilities</option>
-                <option value="government-public-sector">
-                  Government & Public Sector
-                </option>
-                <option value="human-resources">Human Resources</option>
-                <option value="retail">Retail</option>
-                <option value="craft-handmade">Craft & Handmade</option>
-              </select>
-              <FieldInfo field={field} />
-            </>
-          )}
-        />
-        <form.Field
-          name="Styles"
-          validators={{
-            onChange: ({ value }) =>
-              !value ? "Please select a logo style" : undefined,
-          }}
-          children={(field) => (
-            <>
-              <label htmlFor={field.name} className="text-left">
-                Style
-              </label>
-              <select
-                name={field.name}
-                id={field.name}
-                className="select border-2"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-              >
-                <option value="">Select Logo Style</option>
-                <option value="minimalist">Minimalist</option>
-                <option value="modern">Modern</option>
-                <option value="classic">Classic / Vintage</option>
-                <option value="elegant">Elegant / Luxury</option>
-                <option value="bold">Bold / Strong</option>
-                <option value="playful">Playful / Fun</option>
-                <option value="abstract">Abstract</option>
-                <option value="typography">Typography-Based</option>
-                <option value="emblem">Emblem / Badge</option>
-                <option value="handwritten">Handwritten / Script</option>
-              </select>
-              <FieldInfo field={field} />
-            </>
-          )}
-        />
-        <form.Field
-          name="Symbols"
-          validators={{
-            onChange: ({ value }) =>
-              !value
-                ? "Icon or Symbol is required"
-                : value.length < 3
-                  ? "Icon or Symbol must be at least 3 characters"
-                  : undefined,
-          }}
-          children={(field) => (
-            <>
-              <label htmlFor={field.name} className="text-left">
-                Icon or Symbol
-              </label>
-              <input
-                type="text"
-                id={field.name}
-                placeholder="Icon or Symbol Preferences"
-                className="input border-4"
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              <FieldInfo field={field} />
-            </>
-          )}
-        />
-        <form.Field
-          name="PrimaryColor"
-          children={(field) => (
-            <>
-              <label className="text-left">Primary Color</label>
-              <button
-                style={{ backgroundColor: field.state.value }}
-                onClick={() =>
-                  setStatePicker({
-                    openState: !statePicker.openState,
-                    selectPicker: 1,
-                  })
-                }
-                className="btn w-3 rounded-3"
-              ></button>
-              <FieldInfo field={field} />
-            </>
-          )}
-        />
-        <form.Field
-          name="SecondaryColor"
-          children={(field) => (
-            <>
-              <label className="text-left">Secondary Color</label>
-              <button
-                style={{ backgroundColor: field.state.value }}
-                onClick={() =>
-                  setStatePicker({
-                    openState: !statePicker.openState,
-                    selectPicker: 2,
-                  })
-                }
-                className="btn w-3 rounded-3"
-              ></button>
-              <FieldInfo field={field} />
-            </>
-          )}
-        />
-        <div ref={colorPickerRef}>
-          {statePicker.openState && (
-            <ColorPicker color={color} onChange={setColor} />
-          )}
+        <div className="flex items-center justify-center">
+          <img
+            src={generatedImage}
+            alt="Generated"
+            style={{ maxWidth: "100%" }}
+          />
         </div>
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
-            <button
-              type="submit"
-              disabled={!canSubmit || loading}
-              className="btn p-8 btn-primary"
-            >
-              {loading || isSubmitting ? (
-                <p>Generating image...</p>
-              ) : (
-                <h1 className="text-xl">Start Generating Your Logo</h1>
+      )}
+      <div className="flex items-center flex-col space-y-7 max-w-3xl m-auto mt-5 mb-5">
+        <h1 className="text-7xl font-black font-display text-primary mb-1 text-center">
+          LOGO VIBE
+        </h1>
+        <h2 className="text-4xl font-black font-display text-info mb-15 text-center">
+          AI-powered logo generation
+        </h2>
+        <p className="text-center">
+          Transform your brand vision into professional logos instantly. Just
+          provide your company name, industry, preferred colors, and style
+          preferences - our AI does the rest.
+        </p>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+          className="space-y-7 max-w-3xl m-auto"
+        >
+          <form.Field
+            name="BrandName"
+            validators={{
+              onChange: ({ value }) =>
+                !value
+                  ? "Brand or Company name is required"
+                  : value.length < 3
+                    ? "Brand or Company name must be at least 3 characters"
+                    : undefined,
+              onChangeAsyncDebounceMs: 500,
+              onChangeAsync: async ({ value }) => {
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                return (
+                  value.includes("error") && 'No "error" allowed in brand name'
+                );
+              },
+            }}
+            children={(field) => (
+              <>
+                <div className="grid grid-cols-2 gap-2 items-center">
+                  <label
+                    htmlFor={field.name}
+                    className="text-right w-full mr-3"
+                  >
+                    Brand or Company name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Type here"
+                    className="input border-2 w-full border-info rounded-sm text-gray-500 focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  <div className="col-span-2 text-right text-info">
+                    <FieldInfo field={field} />
+                  </div>
+                </div>
+              </>
+            )}
+          />
+          <form.Field
+            name="Industry"
+            validators={{
+              onChange: ({ value }) =>
+                !value ? "Please select an industry" : undefined,
+            }}
+            children={(field) => (
+              <>
+                <div className="grid grid-cols-2 gap-2 items-center">
+                  <label
+                    htmlFor={field.name}
+                    className="text-right w-full mr-3"
+                  >
+                    Industry
+                  </label>
+                  <select
+                    name={field.name}
+                    id={field.name}
+                    className="select border-2 w-full border-info rounded-sm text-gray-500 focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                  >
+                    <option value="">Select Industry</option>
+                    <option value="technology">Technology</option>
+                    <option value="ecommerce">E-commerce</option>
+                    <option value="finance-accounting">
+                      Finance & Accounting
+                    </option>
+                    <option value="health-wellness">Health & Wellness</option>
+                    <option value="real-estate">Real Estate</option>
+                    <option value="education">Education</option>
+                    <option value="food-beverage">Food & Beverage</option>
+                    <option value="fashion-beauty">Fashion & Beauty</option>
+                    <option value="sports-fitness">Sports & Fitness</option>
+                    <option value="travel-hospitality">
+                      Travel & Hospitality
+                    </option>
+                    <option value="automotive">Automotive</option>
+                    <option value="media-entertainment">
+                      Media & Entertainment
+                    </option>
+                    <option value="marketing-advertising">
+                      Marketing & Advertising
+                    </option>
+                    <option value="nonprofit-charity">
+                      Non-Profit / Charity
+                    </option>
+                    <option value="legal-law">Legal & Law</option>
+                    <option value="construction-architecture">
+                      Construction & Architecture
+                    </option>
+                    <option value="art-design">Art & Design</option>
+                    <option value="photography">Photography</option>
+                    <option value="pet-animal-services">
+                      Pet & Animal Services
+                    </option>
+                    <option value="gaming">Gaming</option>
+                    <option value="event-planning">Event Planning</option>
+                    <option value="home-services">Home Services</option>
+                    <option value="consulting">Consulting</option>
+                    <option value="logistics-transportation">
+                      Logistics & Transportation
+                    </option>
+                    <option value="agriculture">Agriculture</option>
+                    <option value="energy-utilities">Energy & Utilities</option>
+                    <option value="government-public-sector">
+                      Government & Public Sector
+                    </option>
+                    <option value="human-resources">Human Resources</option>
+                    <option value="retail">Retail</option>
+                    <option value="craft-handmade">Craft & Handmade</option>
+                  </select>
+                  <div className="col-span-2 text-right text-info">
+                    <FieldInfo field={field} />
+                  </div>
+                </div>
+              </>
+            )}
+          />
+          <form.Field
+            name="Styles"
+            validators={{
+              onChange: ({ value }) =>
+                !value ? "Please select a logo style" : undefined,
+            }}
+            children={(field) => (
+              <>
+                <div className="grid grid-cols-2 gap-2 items-center">
+                  <label
+                    htmlFor={field.name}
+                    className="text-right w-full mr-3 "
+                  >
+                    Style
+                  </label>
+                  <select
+                    name={field.name}
+                    id={field.name}
+                    className="select border-2 w-full border-info rounded-sm text-gray-500 focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                  >
+                    <option value="">Select Logo Style</option>
+                    <option value="minimalist">Minimalist</option>
+                    <option value="modern">Modern</option>
+                    <option value="classic">Classic / Vintage</option>
+                    <option value="elegant">Elegant / Luxury</option>
+                    <option value="bold">Bold / Strong</option>
+                    <option value="playful">Playful / Fun</option>
+                    <option value="abstract">Abstract</option>
+                    <option value="typography">Typography-Based</option>
+                    <option value="emblem">Emblem / Badge</option>
+                    <option value="handwritten">Handwritten / Script</option>
+                  </select>
+                  <div className="col-span-2 text-right text-info">
+                    <FieldInfo field={field} />
+                  </div>
+                </div>
+              </>
+            )}
+          />
+
+          <form.Field
+            name="Symbols"
+            validators={{
+              onChange: ({ value }) =>
+                !value
+                  ? "Icon or Symbol is required"
+                  : value.length < 3
+                    ? "Icon or Symbol must be at least 3 characters"
+                    : undefined,
+            }}
+            children={(field) => (
+              <>
+                <div className="grid grid-cols-2 gap-2 items-center">
+                  <label
+                    htmlFor={field.name}
+                    className="text-right w-full mr-3"
+                  >
+                    Icon or Symbol
+                  </label>
+                  <input
+                    type="text"
+                    id={field.name}
+                    placeholder="Icon or Symbol Preferences"
+                    className="input border-2 w-full border-info rounded-sm text-gray-500 focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  <div className="col-span-2 text-right text-info">
+                    <FieldInfo field={field} />
+                  </div>
+                </div>
+              </>
+            )}
+          />
+
+          <div className="flex items-center">
+            <form.Field
+              name="PrimaryColor"
+              children={(field) => (
+                <div className="flex w-full  items-center">
+                  <label className="text-right w-full mr-3">Colors</label>
+                  <button
+                    style={{ backgroundColor: field.state.value }}
+                    onClick={() =>
+                      setStatePicker({
+                        openState: !statePicker.openState,
+                        selectPicker: 1,
+                      })
+                    }
+                    className="btn w-3 h-9 rounded-full focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                  ></button>
+                  <FieldInfo field={field} />
+                </div>
               )}
-            </button>
-          )}
-        />
-        <div>
+            />
+            <form.Field
+              name="SecondaryColor"
+              children={(field) => (
+                <div className="flex w-full">
+                  <button
+                    style={{ backgroundColor: field.state.value }}
+                    onClick={() =>
+                      setStatePicker({
+                        openState: !statePicker.openState,
+                        selectPicker: 2,
+                      })
+                    }
+                    className="btn w-3 h-9 rounded-full focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                  ></button>
+                  <FieldInfo field={field} />
+                </div>
+              )}
+            />
+          </div>
+
+          <div ref={colorPickerRef}>
+            {statePicker.openState && (
+              <ColorPicker color={color} onChange={setColor} />
+            )}
+          </div>
+
+          <div className="flex items-center justify-center mt-30">
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+              children={([canSubmit, isSubmitting]) => (
+                <button
+                  type="submit"
+                  disabled={!canSubmit || loading}
+                  className="btn p-4 btn-primary text-amber-100 rounded-sm"
+                >
+                  {loading || isSubmitting ? (
+                    <div className="flex">
+                      <span className="loading loading-spinner loading-xl mr-3"></span>
+                      Generating image ....
+                    </div>
+                  ) : (
+                    <h1 className="text-lg">Start Generating Your Logo</h1>
+                  )}
+                </button>
+              )}
+            />
+          </div>
+          {/* <div>
           {form.state.values.BrandName}, {form.state.values.PrimaryColor},{" "}
           {form.state.values.SecondaryColor}, {form.state.values.Industry},{" "}
           {form.state.values.Symbols}
-        </div>
-      </form>
+        </div> */}
+        </form>
+      </div>
     </>
   );
 }

@@ -5,10 +5,10 @@ const App = () => {
   return (
     <>
       <div className="flex items-center flex-col space-y-7 max-w-3xl m-auto mt-5 mb-5">
-        <h1 className="text-7xl font-black font-display text-primary mb-1">
+        <h1 className="text-7xl font-black font-display text-primary mb-1 text-center">
           LOGO VIBE
         </h1>
-        <h2 className="text-4xl font-black font-display text-info mb-15">
+        <h2 className="text-4xl font-black font-display text-info mb-15 text-center">
           AI-powered logo generation
         </h2>
         <p className="text-center">
