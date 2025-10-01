@@ -119,7 +119,7 @@ function CreateLogo() {
         <h2 className="text-4xl font-black font-display text-info mb-15 text-center">
           AI-powered logo generation
         </h2>
-        <p className="text-center">
+        <p className="text-center mb-20">
           Transform your brand vision into professional logos instantly. Just
           provide your company name, industry, preferred colors, and style
           preferences - our AI does the rest.
@@ -130,7 +130,7 @@ function CreateLogo() {
             e.stopPropagation();
             form.handleSubmit();
           }}
-          className="space-y-7 max-w-3xl m-auto"
+          className="space-y-7 md:min-w-2xl m-auto"
         >
           <form.Field
             name="BrandName"
@@ -151,10 +151,10 @@ function CreateLogo() {
             }}
             children={(field) => (
               <>
-                <div className="grid grid-cols-2 gap-2 items-center">
+                <div className="md:grid md:grid-cols-2 md:gap-2 md:items-center">
                   <label
                     htmlFor={field.name}
-                    className="text-right w-full mr-3"
+                    className="text-right w-full mr-3 mb-5 text-primary font-bold"
                   >
                     Brand or Company name
                   </label>
@@ -183,10 +183,10 @@ function CreateLogo() {
             }}
             children={(field) => (
               <>
-                <div className="grid grid-cols-2 gap-2 items-center">
+                <div className="md:grid md:grid-cols-2 md:gap-2 md:items-centerr">
                   <label
                     htmlFor={field.name}
-                    className="text-right w-full mr-3"
+                    className="text-right w-full mr-3 text-primary font-bold"
                   >
                     Industry
                   </label>
@@ -263,10 +263,10 @@ function CreateLogo() {
             }}
             children={(field) => (
               <>
-                <div className="grid grid-cols-2 gap-2 items-center">
+                <div className="md:grid md:grid-cols-2 md:gap-2 md:items-center">
                   <label
                     htmlFor={field.name}
-                    className="text-right w-full mr-3 "
+                    className="text-right w-full mr-3 text-primary font-bold"
                   >
                     Style
                   </label>
@@ -310,10 +310,10 @@ function CreateLogo() {
             }}
             children={(field) => (
               <>
-                <div className="grid grid-cols-2 gap-2 items-center">
+                <div className="md:grid md:grid-cols-2 md:gap-2 md:items-center">
                   <label
                     htmlFor={field.name}
-                    className="text-right w-full mr-3"
+                    className="text-right w-full mr-3 text-primary font-bold"
                   >
                     Icon or Symbol
                   </label>
@@ -339,7 +339,9 @@ function CreateLogo() {
               name="PrimaryColor"
               children={(field) => (
                 <div className="flex w-full  items-center">
-                  <label className="text-right w-full mr-3">Colors</label>
+                  <label className="text-right w-full mr-3 text-primary font-bold">
+                    Colors
+                  </label>
                   <button
                     style={{ backgroundColor: field.state.value }}
                     onClick={() =>
