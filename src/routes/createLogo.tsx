@@ -112,15 +112,6 @@ function CreateLogo() {
   });
   return (
     <>
-      {generatedImage && (
-        <div className="flex items-center justify-center">
-          <img
-            src={generatedImage}
-            alt="Generated"
-            style={{ maxWidth: "100%" }}
-          />
-        </div>
-      )}
       <div className="flex items-center flex-col space-y-7 max-w-3xl m-auto mt-5 mb-5">
         <h1 className="text-7xl font-black font-display text-primary mb-1 text-center">
           LOGO VIBE
@@ -409,6 +400,17 @@ function CreateLogo() {
                 </button>
               )}
             />
+          </div>
+          <div>
+            {generatedImage && (
+              <div className="flex items-center justify-center mt-10">
+                <img
+                  src={generatedImage}
+                  alt="Generated"
+                  style={{ maxWidth: "100%" }}
+                />
+              </div>
+            )}
           </div>
           {/* <div>
           {form.state.values.BrandName}, {form.state.values.PrimaryColor},{" "}
