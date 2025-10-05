@@ -110,6 +110,18 @@ function CreateLogo() {
   const genAI = new GoogleGenAI({
     apiKey: import.meta.env.VITE_API_KEY,
   });
+
+  const validateColor = ({ value }: { value: string }) => {
+    if (!value) {
+      return "Color is required";
+    }
+    const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+    if (!hexRegex.test(value)) {
+      return "Invalid color format. Please use a valid hex color (e.g., #RRGGBB or #RGB).";
+    }
+    return undefined;
+  };
+
   return (
     <>
       <div className="flex items-center flex-col space-y-7 max-w-3xl m-auto mt-5 mb-5">
@@ -337,12 +349,15 @@ function CreateLogo() {
           <div className="flex items-center">
             <form.Field
               name="PrimaryColor"
+              validators={{
+                onChange: validateColor,
+              }}
               children={(field) => (
-                <div className="flex w-full  items-center">
+                <div className="flex w-full items-center">
                   <label className="text-right w-full mr-3 text-primary font-bold">
                     Colors
                   </label>
-                  <button
+                  <div
                     style={{ backgroundColor: field.state.value }}
                     onClick={() =>
                       setStatePicker({
@@ -351,16 +366,19 @@ function CreateLogo() {
                       })
                     }
                     className="btn w-3 h-9 rounded-full focus:outline-2 focus:outline-offset-2 focus:outline-primary"
-                  ></button>
+                  ></div>
                   <FieldInfo field={field} />
                 </div>
               )}
             />
             <form.Field
               name="SecondaryColor"
+              validators={{
+                onChange: validateColor,
+              }}
               children={(field) => (
                 <div className="flex w-full">
-                  <button
+                  <div
                     style={{ backgroundColor: field.state.value }}
                     onClick={() =>
                       setStatePicker({
@@ -369,7 +387,7 @@ function CreateLogo() {
                       })
                     }
                     className="btn w-3 h-9 rounded-full focus:outline-2 focus:outline-offset-2 focus:outline-primary"
-                  ></button>
+                  ></div>
                   <FieldInfo field={field} />
                 </div>
               )}
@@ -388,7 +406,7 @@ function CreateLogo() {
               children={([canSubmit, isSubmitting]) => (
                 <button
                   type="submit"
-                  disabled={!canSubmit || loading}
+                  disabled={!canSubmit || loading || statePicker.openState}
                   className="btn p-4 btn-primary text-amber-100 rounded-sm"
                 >
                   {loading || isSubmitting ? (
@@ -414,11 +432,6 @@ function CreateLogo() {
               </div>
             )}
           </div>
-          {/* <div>
-          {form.state.values.BrandName}, {form.state.values.PrimaryColor},{" "}
-          {form.state.values.SecondaryColor}, {form.state.values.Industry},{" "}
-          {form.state.values.Symbols}
-        </div> */}
         </form>
       </div>
     </>
