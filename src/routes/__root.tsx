@@ -4,8 +4,8 @@ const RootLayout = () => (
   <>
     <div className="p-2 flex gap-2">
       <Link to="/" className="[&.active]:font-bold">
-        <img src="logo.svg" />
-      </Link>{" "}
+        <img src="logo.svg" alt="Logo Vibe" />
+      </Link>
     </div>
     <Outlet />
   </>

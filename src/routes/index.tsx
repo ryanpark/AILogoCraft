@@ -5,17 +5,18 @@ const App = () => {
   return (
     <>
       <div className="flex items-center flex-col space-y-7 max-w-3xl m-auto mt-5 mb-5">
-        <h1 className="text-7xl font-black font-display text-primary mb-1 text-center">
+        <div className="text-7xl font-black font-display text-primary mb-1 text-center">
           LOGO VIBE
+        </div>
+        <h1 className="text-4xl font-black font-display text-info mb-15 text-center">
+          Create Professional Logos with AI - Instantly Transform Your Brand
+          Vision
         </h1>
-        <h2 className="text-4xl font-black font-display text-info mb-15 text-center">
-          AI-powered logo generation
-        </h2>
-        <p className="text-center">
+        <h2 className="text-center">
           Transform your brand vision into professional logos instantly. Just
           provide your company name, industry, preferred colors, and style
           preferences - our AI does the rest.
-        </p>
+        </h2>
         <div className="flex mr-2 gap-5 mb-15 mt-15">
           <button className="btn btn-primary rounded-sm">
             <Link
@@ -32,7 +33,7 @@ const App = () => {
           </button>
         </div>
         <div className="mb-10">
-          <img src="logo.svg" width="80" />
+          <img src="logo.svg" width="80" alt="Logo Vibe" />
         </div>
         <h2 className="text-4xl font-black font-display text-info mb-2">
           How it works

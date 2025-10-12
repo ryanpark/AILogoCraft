@@ -426,7 +426,7 @@ function CreateLogo() {
               <div className="flex items-center justify-center mt-10">
                 <img
                   src={generatedImage}
-                  alt="Generated"
+                  alt="Generated Logo"
                   style={{ maxWidth: "100%" }}
                 />
               </div>
